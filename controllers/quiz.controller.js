@@ -74,7 +74,7 @@ export const quizzesQuestionById = (req, res) => {
         const sortedQuestions = questions_list.sort((a, b) => a.question_number - b.question_number);
         
         const formattedQuiz = {
-            id: quizId, // Gunakan variabel quizId yang sudah diganti nama untuk menghindari konflik
+            id: quizId,
             name,
             questions_list: sortedQuestions.map(({ question_number, question, options }) => ({
                 question_number,
