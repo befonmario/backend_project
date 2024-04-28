@@ -34,8 +34,7 @@ export const login = (req, res) => {
 
         //lolos
         //parameter (userInfo, secretKey, expiredTime)
-        console.log(process.env.JWT_SECRET);
-        const token = jwt.sign({userId: user.id}, 'passwordKey', {expiresIn: '1h'} )
+        const token = jwt.sign({userId: user.id}, process.env.JWT_SECRET, {expiresIn: '1h'} )
         res.json({ token });
 
     
@@ -89,3 +88,4 @@ export const register = async (req, res) => {
         res.send(data)
     })
 }
+

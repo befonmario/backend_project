@@ -56,8 +56,8 @@ User.findByUsername = (username, result) => {
 }
 
 User.update = (id, data, result) =>{
-    sql.query(`UPDATE ${tableName} SET question = ? , option_a = ?, option_b = ?, option_c = ?, option_d = ?, correct_answer = ? WHERE id = ?`,
-        [data.question, data.option_a, data.option_b, data.option_c, data.option_d, data.correct_answer, id], (err, res) => {
+    sql.query(`UPDATE ${tableName} SET username =?, name = ?, password = ?, email = ?, WHERE id = ?`,
+        [data.username, data.name, data.password, data.email, id], (err, res) => {
             if(err) {
                 result(err, null)
                 return

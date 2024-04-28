@@ -2,13 +2,21 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connection from './models/connection.js';
 import authRoute from './routes/auth.route.js';
+import loggingMiddleware from './middlewares/LoggingMiddleware.js';
+import userRoute from './routes/user.route.js';
+import quizRoute from './routes/quiz.route.js';
 const app = express();
+dotenv.config()
+
 
 app.use(express.json());
+app.use(loggingMiddleware)
 app.get('/', (req,res)=> {
     res.send("test")
 })
 app.use('/auth', authRoute)
+app.use('/users', userRoute)
+app.use('/quizzes', quizRoute);
 
 
 const PORT = process.env.PORT || 3000
