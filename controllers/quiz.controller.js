@@ -21,9 +21,9 @@ export const quizzesQuestion = (req, res) => {
         
         // Memformat setiap objek quiz
         const formattedQuizzes = data.map(quiz => {
-            const { id, name, data, } = quiz;
+            const { id, name, data } = quiz;
             const parsedData = JSON.parse(data);
-            const { questions_list } = parsedData;
+            const { answer, questions_list } = parsedData;
             const sortedQuestions = questions_list.sort((a, b) => a.question_number - b.question_number);
             return {
                 id,
@@ -31,7 +31,8 @@ export const quizzesQuestion = (req, res) => {
                 questions_list: sortedQuestions.map(({ question_number, question, options }) => ({
                     question_number,
                     question,
-                    options
+                    options,
+                    answer
                 })),
             };
         });
@@ -64,6 +65,12 @@ export const quizzesQuestionById = (req, res) => {
         
         if (!data) {
             res.status(404).json({ message: "Kuis tidak ditemukan" });
+            return;
+        }
+
+        // Tambahkan kondisi untuk mengecek isPublished
+        if (!data.isPublished) {
+            res.status(403).json({ message: "Kuis masih private" });
             return;
         }
         
@@ -101,5 +108,6 @@ export const publishQuizById = (req, res) => {
         res.json({ message: `Kuis dengan ID ${quizId} telah menjadi public` });
     });
 };
+
 
 

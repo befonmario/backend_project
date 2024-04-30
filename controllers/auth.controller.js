@@ -34,7 +34,7 @@ export const login = (req, res) => {
 
         //lolos
         //parameter (userInfo, secretKey, expiredTime)
-        const token = jwt.sign({userId: user.id}, process.env.JWT_SECRET, {expiresIn: '1h'} )
+        const token = jwt.sign({userId: user.id, role: user.role, name: user.name}, process.env.JWT_SECRET, {expiresIn: '1h'} )
         res.json({ token });
 
     
@@ -75,7 +75,8 @@ export const register = async (req, res) => {
         username: req.body.username,
         name: req.body.name,
         password: encryptPassword,
-        email: req.body.email
+        email: req.body.email,
+        role : req.body.role
     })
 
     console.log(newUser)

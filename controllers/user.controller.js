@@ -22,3 +22,55 @@ export const destroy = (req, res) => {
         }
     })
 }
+
+export const findProfile = (req, res) => {
+    const name = req.params.name;
+    User.findByName(name, (err, data) => { 
+        if (err) {
+            if (err.type == 'not_found') {
+                res.status(404).send({
+                    message: `User not found with name: ${name}`
+                });
+            } else {
+                res.status(500).send({ msg: "Error retrieving user profile" });
+            }
+        } else {
+            res.send(data);
+        }
+    });
+};
+
+export const updateProfile = (req, res) => {
+    const name = req.params.name;
+    const newData = {
+        username: req.body.username,
+        name: req.body.name,
+        password: req.body.password,
+        email: req.body.email
+    };
+    User.findByName(name, (err, user) => {
+        if (err) {
+            if (err.type == 'not_found') {
+                res.status(404).send({
+                    message: `User not found with name: ${name}`
+                });
+            } else {
+                res.status(500).send({ msg: "Error updating user profile" });
+            }
+        } else {
+            User.updateProfile(user.id, newData, (err, data) => {
+                if (err) {
+                    if (err.type == 'not_found') {
+                        res.status(404).send({
+                            message: `User not found with id: ${user.id}`
+                        });
+                    } else {
+                        res.status(500).send({ msg: "Error updating user profile" });
+                    }
+                } else {
+                    res.send({ message: "User profile updated successfully" });
+                }
+            });
+        }
+    });
+};

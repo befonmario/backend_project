@@ -12,11 +12,25 @@ const tableName = 'quizzes';
 
 Quiz.create = (newQuiz, result) => {
     const { name, data, isPublished } = newQuiz;
+
+    // Pastikan data dan nama tidak kosong
+    if (!data) {
+        console.error("Kesalahan: Data tidak boleh kosong");
+        result({ message: "Data tidak boleh kosong" }, null);
+        return;
+    } else if (!name) {
+        console.error("Kesalahan: nama tidak boleh kosong");
+        result({ message: "name tidak boleh kosong" }, null);
+        return;
+    }
+
+    const newId = uuidv4(); // Generate UUID baru
     const sqlQuery = `
         INSERT INTO ${tableName} (id, name, data, isPublished) 
         VALUES (?, ?, ?, ?)
     `;
-    const values = [newQuiz.id, name, JSON.stringify(data), isPublished || false];
+
+    const values = [newId, name, JSON.stringify(data), isPublished || false];
 
     sql.query(sqlQuery, values, (err, res) => {
         if (err) {
@@ -25,10 +39,11 @@ Quiz.create = (newQuiz, result) => {
             return;
         }
         
-        console.log("Kuis berhasil ditambahkan:", { id: newQuiz.id, ...newQuiz });
-        result(null, { id: newQuiz.id, ...newQuiz });
+        console.log("Kuis berhasil ditambahkan:", { id: newId, ...newQuiz });
+        result(null, { id: newId, ...newQuiz });
     });
 };
+
 
 // Metode untuk mengambil semua data kuis
 Quiz.getAll = result => {
@@ -115,4 +130,5 @@ Quiz.publishById = (id, result) => {
         result(null, res);
     });
 };
+
 export default Quiz;

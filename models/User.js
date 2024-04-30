@@ -5,6 +5,7 @@ const User = function(user){
     this.name = user.name
     this.password = user.password
     this.email = user.email
+    this.role = user.role
 }
 
 const tableName = 'users'
@@ -86,6 +87,46 @@ User.delete = (id, result) => {
         result(null, res)
     })
 }
+
+User.findByName = (name, result) => {
+    sql.query(`SELECT * FROM ${tableName} WHERE name = ?`, name, (err, res) => {
+        if (err) {
+            result(err, null);
+            return;
+        }
+
+        if (res.length) {
+            result(null, res[0]);
+            return;
+        }
+
+        // Jika tidak ada pengguna dengan nama tersebut
+        result({ type: 'not_found' }, null);
+    });
+};
+
+User.updateProfile = (id, newData, result) => {
+    sql.query(
+        `UPDATE ${tableName} SET username = ?, name = ?, password = ?, email = ? WHERE id = ?`,
+        [newData.username, newData.name, newData.password, newData.email, id],
+        (err, res) => {
+            if (err) {
+                result(err, null);
+                return;
+            }
+
+            if (res.affectedRows == 0) {
+                // Tidak ada pengguna yang ditemukan dengan ID yang diberikan
+                result({ type: 'not_found' }, null);
+                return;
+            }
+
+            // Profil pengguna berhasil diperbarui
+            result(null, { id: id, newData });
+        }
+    );
+};
+
 
 
 export default User
