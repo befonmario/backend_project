@@ -1,46 +1,29 @@
-import sql from "./connection.js";
-
-const QuizResult = function(quizResult) {
-    this.nama = quizResult.nama;
+const Result = function(quizResult) {
     this.quizId = quizResult.quizId;
+    this.name = quizResult.name;
     this.score = quizResult.score;
-    this.attemptNo = quizResult.attemptNo;
 };
 
-const tableName = 'quizresult';
+const quizResultTableName = 'quizresult';
 
-// Mendapatkan total attempt dan score dari answeruser
-QuizResult.getAttemptAndScore = (nama, callback) => {
-    const query = `
-        SELECT COUNT(*) AS total_attempt, SUM(IF(au.answer = q.answer, 1, 0)) AS score
-        FROM answeruser au
-        JOIN quizzes q ON au.questionId = q.questionId
-        WHERE au.nama = ?
+Result.create = (newQuizResult, result) => {
+    const { quizId, name, score } = newQuizResult;
+    const sqlQuery = `
+        INSERT INTO ${quizResultTableName} (quizId, name, score)
+        VALUES (?, ?, ?)
     `;
-    sql.query(query, [nama], (err, results) => {
+    const values = [quizId, name, score];
+
+    sql.query(sqlQuery, values, (err, res) => {
         if (err) {
-            return callback(err, null);
+            console.error("Kesalahan:", err);
+            result(err, null);
+            return;
         }
-        if (results.length === 0) {
-            return callback(null, { total_attempt: 0, score: 0 });
-        }
-        const { total_attempt, score } = results[0];
-        callback(null, { total_attempt, score });
+        
+        console.log("Data hasil kuis berhasil ditambahkan:", { quizId, name, score });
+        result(null, { quizId, name, score });
     });
 };
 
-// Menyimpan hasil quiz ke dalam tabel quizresult
-QuizResult.saveQuizResult = (nama, quizId, score, attemptNo, callback) => {
-    const insertQuery = `
-        INSERT INTO ${tableName} (nama, quizId, score, attemptNo)
-        VALUES (?, ?, ?, ?)
-    `;
-    sql.query(insertQuery, [nama, quizId, score, attemptNo], (err, result) => {
-        if (err) {
-            return callback(err);
-        }
-        callback(null);
-    });
-};
-
-export default QuizResult;
+export default Result;

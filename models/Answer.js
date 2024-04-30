@@ -28,23 +28,4 @@ Answer.create = (newAnswer, result) => {
     });
 };
 
-Answer.getByName = (name, result) => {
-    const sqlQuery = `
-        SELECT quizId, name
-        FROM ${tableName}
-        WHERE name = ?
-    `;
-    sql.query(sqlQuery, name, (err, res) => {
-        if (err) {
-            console.error("Kesalahan:", err);
-            result(err, null);
-            return;
-        }
-        
-        console.log("Data jawaban berhasil ditemukan:", res);
-        result(null, res);
-    });
-};
-
-
 export default Answer;

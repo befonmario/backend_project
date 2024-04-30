@@ -5,7 +5,7 @@ const authJwt = (req, res, next) => {
     const token = req.headers['authorization']?.replace("Bearer ", "");
     console.log(token);
     if (!token) {
-        return res.status(401).send({ message: 'missing access token' });
+        throw new Error('missing_token')
     }
 
     // verify token

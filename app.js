@@ -7,6 +7,7 @@ import userRoute from './routes/user.route.js';
 import quizRoute from './routes/quiz.route.js';
 import answerRoute from './routes/answer.route.js';
 import resultRoute from './routes/result.route.js';
+import errorHandler from './middlewares/errorHandler.js';
 const app = express();
 dotenv.config()
 
@@ -21,6 +22,7 @@ app.use('/users', userRoute)
 app.use('/quizzes', quizRoute);
 app.use('/quizzes', answerRoute)
 app.use('/result', resultRoute )
+app.use(errorHandler)
 
 
 const PORT = process.env.PORT || 3000

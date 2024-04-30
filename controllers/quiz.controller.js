@@ -19,7 +19,7 @@ export const quizzesQuestion = (req, res) => {
             return;
         }
         
-        // Memformat setiap objek quiz
+        //format object data
         const formattedQuizzes = data.map(quiz => {
             const { id, name, data } = quiz;
             const parsedData = JSON.parse(data);
@@ -68,14 +68,13 @@ export const quizzesQuestionById = (req, res) => {
             return;
         }
 
-        // Tambahkan kondisi untuk mengecek isPublished
+        // check if public
         if (!data.isPublished) {
             res.status(403).json({ message: "Kuis masih private" });
             return;
-        }
-        
-        // Memformat data kuis
-        const { id: quizId, name, data: quizData } = data; // Ubah variabel data menjadi quizData
+        }       
+
+        const { id: quizId, name, data: quizData } = data; 
         const parsedData = JSON.parse(quizData);
         const { questions_list } = parsedData;
         const sortedQuestions = questions_list.sort((a, b) => a.question_number - b.question_number);
