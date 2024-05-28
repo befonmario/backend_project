@@ -13,7 +13,7 @@ const roleAccess = (userRole, endpoint, method) => {
         return true;
     } else if (endpoint === '/quizzes/dashboard' && (userRole === 'superadmin' || userRole === 'admin' || userRole === 'user')) {
         return true;
-    } else if (endpoint === '/profile' && (userRole === 'superadmin' || userRole === 'admin' || userRole === 'user')) {
+    } else if (endpoint === 'users/profile' && (userRole === 'superadmin' || userRole === 'admin' || userRole === 'user')) {
         return true;
     } else {
         return false;
