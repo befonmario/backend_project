@@ -107,8 +107,8 @@ User.findByName = (name, result) => {
 
 User.updateProfile = (id, newData, result) => {
     sql.query(
-        `UPDATE ${tableName} SET username = ?, name = ?, password = ?, email = ? WHERE id = ?`,
-        [newData.username, newData.name, newData.password, newData.email, id],
+        `UPDATE ${tableName} SET username = ?, name = ?, email = ? WHERE id = ?`,
+        [newData.username, newData.name, newData.email, id],
         (err, res) => {
             if (err) {
                 result(err, null);

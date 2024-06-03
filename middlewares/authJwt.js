@@ -20,8 +20,11 @@ const authJwt = (req, res, next) => {
         decoded.name = name;
 
         req.userId = userId;
+        req.userRole = role;
+        req.user = decoded;
 
-        if (!roleAccess(role, req.baseUrl)) {
+        if (!roleAccess(req.userRole, req.baseUrl)) {
+            console.log(req.userRole)
             console.log(role)
             return res.status(403).json({ message: "unauthorized access" });
         }

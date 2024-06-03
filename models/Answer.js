@@ -28,4 +28,26 @@ Answer.create = (newAnswer, result) => {
     });
 };
 
+Answer.getByName = (name, result) => {
+    const sqlQuery = `
+        SELECT * FROM ${tableName} WHERE name = ?
+    `;
+    const values = [name];
+
+    sql.query(sqlQuery, values, (err, res) => {
+        if (err) {
+            console.error("Kesalahan:", err);
+            result(err, null);
+            return;
+        }
+
+        if (res.length) {
+            console.log("Data ditemukan:", res);
+            result(null, res);
+        } else {
+            result({ type: 'not_found' }, null);
+        }
+    });
+};
+
 export default Answer;

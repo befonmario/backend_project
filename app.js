@@ -8,10 +8,11 @@ import quizRoute from './routes/quiz.route.js';
 import answerRoute from './routes/answer.route.js';
 import resultRoute from './routes/result.route.js';
 import errorHandler from './middlewares/errorHandler.js';
+import cors from 'cors'
 const app = express();
 dotenv.config()
 
-
+app.use(cors())
 app.use(express.json());
 app.use(loggingMiddleware)
 app.get('/', (req,res)=> {

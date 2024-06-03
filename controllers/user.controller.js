@@ -45,7 +45,6 @@ export const updateProfile = (req, res) => {
     const newData = {
         username: req.body.username,
         name: req.body.name,
-        password: req.body.password,
         email: req.body.email
     };
     User.findByName(name, (err, user) => {

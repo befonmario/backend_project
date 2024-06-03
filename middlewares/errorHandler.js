@@ -8,7 +8,7 @@ const errorHandler = (err, req, res, next) => {
             message = "missing access token";
             break;
         default:
-            code=500
+            statusCode=500
             message = "internal server error"
             break
     }
